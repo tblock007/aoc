@@ -46,9 +46,9 @@ isTagValid t v
 
 isValid :: [String] -> Bool
 isValid lines =
-    let joined = intercalate " " lines
-        tags = map (take 3) $ words joined
-        values = map (drop 4) $ words joined
+    let tokens = concat $ map words lines
+        tags = map (take 3) tokens
+        values = map (drop 4) tokens
     in (tags `containsAll` codes) && (allTagsValid tags values)
 
 countValid :: [String] -> Int

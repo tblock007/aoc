@@ -17,7 +17,7 @@ maxSeat :: Int
 maxSeat = foldr max (-1) $ map seatId input
 
 minSeat :: Int
-minSeat = foldr min 1000000 $ map seatId input
+minSeat = foldr min (maxBound :: Int) $ map seatId input
 
 solve :: Int
 solve =

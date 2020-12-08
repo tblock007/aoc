@@ -9,8 +9,8 @@ containsAll tags (c:cs)
 
 isValid :: [String] -> Bool
 isValid lines =
-    let joined = intercalate " " lines
-        tags = map (take 3) (words joined)
+    let tokens = concat $ map words lines
+        tags = map (take 3) tokens
     in tags `containsAll` codes
 
 countValid :: [String] -> Int
