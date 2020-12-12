@@ -1,7 +1,4 @@
 import D12input
-import qualified Data.List as List
-import qualified Data.Map as Map
-import qualified Data.Maybe as Maybe
 
 type WRelCoords = (Int, Int)
 type SAbsCoords = (Int, Int)

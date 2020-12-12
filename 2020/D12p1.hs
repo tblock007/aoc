@@ -1,14 +1,8 @@
 import D12input
-import qualified Data.List as List
-import qualified Data.Map as Map
-import qualified Data.Maybe as Maybe
 
 -- 0 is north, 1 is east, 2 is south, 3 is west
-dd :: Map.Map Int (Int, Int)
-dd = Map.fromList [(0, (0, 1)),
-                   (1, (1, 0)),
-                   (2, (0, -1)),
-                   (3, (-1, 0))]
+dd :: [(Int, Int)]
+dd = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 rotateRight :: String -> Int -> Int
 rotateRight "90" d = mod (d + 1) 4
@@ -22,7 +16,7 @@ rotateLeft "270" = rotateRight "90"
 
 moveForward :: Int -> (Int, Int, Int) -> (Int, Int, Int)
 moveForward n (x, y, d) =
-    let (dx, dy) = Maybe.fromJust $ Map.lookup d dd
+    let (dx, dy) = dd !! d
      in (x + n*dx, y + n*dy, d)
 
 execute :: [(String, String)] -> (Int, Int, Int) -> (Int, Int, Int)
