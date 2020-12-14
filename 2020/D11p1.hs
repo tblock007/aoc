@@ -3,7 +3,6 @@ import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 import Data.Vector as Vector
 
-
 type Grid = Vector (Vector Char)
 
 grid :: [String] -> Grid
@@ -14,15 +13,15 @@ getOffsets (i,j) = [(i-1,j-1), (i,j-1), (i+1,j-1),
                     (i-1,j), (i+1,j),
                     (i-1,j+1), (i,j+1), (i+1,j+1)]
 
-(!!!) :: Grid -> (Int,Int) -> Maybe Char
-(!!!) g (i,j) = do
+(!!?) :: Grid -> (Int,Int) -> Maybe Char
+(!!?) g (i,j) = do
     row <- g !? i
     c <- row !? j
     return c
 
 countNeighbors :: Grid -> (Int, Int) -> Int
 countNeighbors g (i,j) = 
-    let neighbors = Maybe.catMaybes $ List.map (g!!!) $ getOffsets (i,j)
+    let neighbors = Maybe.catMaybes $ List.map (g!!?) $ getOffsets (i,j)
      in List.sum $ List.map (\c -> if c == '#' then 1 else 0) neighbors
 
 nextChar :: Grid -> (Int,Int) -> Char
@@ -31,7 +30,7 @@ nextChar g pos
     | curr == 'L' && numNeighbors == 0 = '#'
     | curr == '#' && numNeighbors >= 4 = 'L'
     | otherwise = curr
-        where curr = Maybe.fromJust (g !!! pos)
+        where curr = Maybe.fromJust (g !!? pos)
               numNeighbors = countNeighbors g pos
 
 updateGrid :: Grid -> Grid

@@ -12,7 +12,7 @@ grid strings = fromList (List.map fromList strings)
 
 getNeighborInDirectionAux :: Grid -> (Int, Int) -> (Int, Int) -> Maybe (Int, Int)
 getNeighborInDirectionAux g pos@(i,j) dir@(di,dj) =
-    case g !!! pos of
+    case g !!? pos of
         Nothing -> Nothing
         Just '.' -> getNeighborInDirectionAux g (i+di,j+dj) dir
         Just _ -> Just pos
@@ -37,15 +37,15 @@ neighborMap =
 getNeighborOffsets :: (Int, Int) -> [(Int, Int)]
 getNeighborOffsets pos = Maybe.fromJust $ Map.lookup pos neighborMap
 
-(!!!) :: Grid -> (Int,Int) -> Maybe Char
-(!!!) g (i,j) = do
+(!!?) :: Grid -> (Int,Int) -> Maybe Char
+(!!?) g (i,j) = do
     row <- g !? i
     c <- row !? j
     return c
 
 countNeighbors :: Grid -> (Int, Int) -> Int
 countNeighbors g (i,j) = 
-    let neighbors = Maybe.catMaybes $ List.map (g!!!) $ getNeighborOffsets (i,j)
+    let neighbors = Maybe.catMaybes $ List.map (g!!?) $ getNeighborOffsets (i,j)
      in List.sum $ List.map (\c -> if c == '#' then 1 else 0) neighbors
 
 nextChar :: Grid -> (Int,Int) -> Char
@@ -54,7 +54,7 @@ nextChar g pos
     | curr == 'L' && numNeighbors == 0 = '#'
     | curr == '#' && numNeighbors >= 5 = 'L'
     | otherwise = curr
-        where curr = Maybe.fromJust (g !!! pos)
+        where curr = Maybe.fromJust (g !!? pos)
               numNeighbors = countNeighbors g pos
 
 updateGrid :: Grid -> Grid
