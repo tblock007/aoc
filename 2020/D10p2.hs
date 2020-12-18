@@ -4,17 +4,16 @@ import qualified Data.Set as Set
 
 countWays :: Set.Set Int -> Int -> Int
 countWays s n = 
-    let countForIMinus2 i
-          | i == 0 || i == 1 = 0
-          | i == 2 = 1
-          | Set.member (i-2) s = 
+    let countAux i
+          | i == 0 = 1
+          | Set.member i s = 
                 let w1 = memo Vector.! (i - 1)
-                    w2 = memo Vector.! (i - 2)
-                    w3 = memo Vector.! (i - 3)
+                    w2 = if i > 1 then memo Vector.! (i - 2) else 0
+                    w3 = if i > 2 then memo Vector.! (i - 3) else 0
                  in w1 + w2 + w3
           | otherwise = 0        
-        memo = Vector.generate (n+3) countForIMinus2
-     in memo Vector.! (n + 2)
+        memo = Vector.generate (n+1) countAux
+     in memo Vector.! n
 
 solve :: Int
 solve =
