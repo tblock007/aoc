@@ -27,7 +27,9 @@ matchesRule m i s =
 
 solve :: Int
 solve = let rulesMap = Map.fromList rules
-         in length $ filter (matchesRule rulesMap 0) input
+            updatedMap = Map.insert 11 [[42,31],[42,11,31]] $ 
+                         Map.insert 8 [[42], [42,8]] rulesMap
+         in length $ filter (matchesRule updatedMap 0) input
 
 main :: IO ()
 main = print $ solve
