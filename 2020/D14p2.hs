@@ -2,13 +2,10 @@ import D14input
 import Data.Bits
 import qualified Data.Map.Strict as Map
 
-fromBinaryAux :: Int -> String -> Int
-fromBinaryAux acc [] = acc
-fromBinaryAux acc ('0':ds) = fromBinaryAux (2 * acc) ds
-fromBinaryAux acc ('1':ds) = fromBinaryAux (2 * acc + 1) ds
-
 fromBinary :: String -> Int
-fromBinary = fromBinaryAux 0
+fromBinary s =
+    let ds = map (\c -> if c == '1' then 1 else 0) s
+     in foldl (\b a -> 2 * b + a) 0 ds
 
 toReversedBinaryString :: Int -> String
 toReversedBinaryString x
