@@ -3,24 +3,31 @@ import Data.List as List
 import Data.Maybe as Maybe
 import Data.Vector as Vector
 
+import Control.Comonad
+import Control.Monad as M
+
 type Grid = Vector (Vector (Vector Char))
 type Coords = (Int, Int, Int)
+
+dim = 25
+idim = 8
 
 emptyPlane :: Vector (Vector Char)
 emptyPlane = Vector.replicate dim (Vector.replicate dim '.')
 
 plane :: [String] -> Vector (Vector Char)
 plane strings = 
-    let hPadding = List.replicate pdim '.'
+    let npad = div (dim - idim) 2
+        hPadding = List.replicate npad '.'
         hPadded = List.map (\s -> hPadding List.++ s List.++ hPadding) strings
         emptyRow = List.replicate dim '.'
-        vPadding = List.replicate pdim emptyRow
+        vPadding = List.replicate npad emptyRow
         listGrid = vPadding List.++ hPadded List.++ vPadding
      in fromList $ List.map fromList listGrid
 
 grid :: [String] -> Grid
 grid strings = 
-    let padding = Vector.replicate pdim emptyPlane
+    let padding = Vector.replicate (div dim 2) emptyPlane
      in padding Vector.++ (Vector.singleton (plane strings)) Vector.++ padding
 
 getOffsets :: Coords -> [Coords]
@@ -75,3 +82,11 @@ solve = countOccupied $ List.head $ List.drop 6 $ iterate updateGrid (grid input
 
 main :: IO ()
 main = print $ solve
+
+printGrid :: Grid -> IO ()
+printGrid g = do
+    M.forM_ g $ \p -> do
+        M.forM_ p $ \r -> do
+            putStr $ Vector.toList r
+            putStr "\n"
+        putStr "\n"

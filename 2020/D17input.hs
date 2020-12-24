@@ -1,7 +1,6 @@
 module D17input where
 
-input' = [".#.", "..#", "###"]
-
+input :: [String]
 input = ["######.#",
 	"#.###.#.",
 	"###.....",
@@ -10,3 +9,12 @@ input = ["######.#",
 	".######.",
 	"###.####",
 	"######.#"]
+
+pdim :: Int
+pdim = 6
+
+idim :: Int
+idim = length input
+
+dim :: Int
+dim = pdim + idim + pdim

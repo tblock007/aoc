@@ -1,7 +1,6 @@
 import D16input
 import Control.Monad
 import Data.List as List
-import Data.Set as Set
 
 -- The input has been modified so that rules are implicitly
 -- keyed by Int instead of String. The six fields starting with
@@ -13,14 +12,13 @@ check n ((a,b), (c,d)) =
     ((n >= a) && (n <= b)) || ((n >= c) && (n <= d))
 
 isValid :: [Rule] -> Int -> Bool
-isValid rs n = let checkResults = List.map (check n) rs
-                in List.foldr (||) False checkResults
+isValid rs n = any (check n) rs
 
 isTicketValid :: [Rule] -> [Int] -> Bool
-isTicketValid rs ns = List.foldr (&&) True $ List.map (isValid rs) ns
+isTicketValid rs ns = all (isValid rs) ns
 
 allSatisfy :: [Int] -> Rule -> Bool
-allSatisfy ns r = List.foldr (&&) True $ List.map ((flip check) r) ns
+allSatisfy ns r = all ((flip check) r) ns
 
 isValidAtPosition :: [[Int]] -> Rule -> [Bool]
 isValidAtPosition os@([]:_) r = []

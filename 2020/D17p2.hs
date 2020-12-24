@@ -3,38 +3,32 @@ import Data.List as List
 import Data.Maybe as Maybe
 import Data.Vector as Vector
 
-import Control.Monad as M
-
 type Grid = Vector (Vector (Vector (Vector Char)))
 type Space = Vector (Vector (Vector Char))
 type Plane = Vector (Vector Char)
 type Line = Vector Char
 type Coords = (Int, Int, Int, Int)
 
-dim = 20
-idim = 8
+emptyPlane :: Plane
+emptyPlane = Vector.replicate dim (Vector.replicate dim '.')
 
 emptySpace :: Space
 emptySpace = Vector.replicate dim emptyPlane
 
-emptyPlane :: Plane
-emptyPlane = Vector.replicate dim (Vector.replicate dim '.')
-
 plane :: [String] -> Plane
 plane strings = 
-    let npad = div (dim - idim) 2
-        hPadding = List.replicate npad '.'
+    let hPadding = List.replicate pdim '.'
         hPadded = List.map (\s -> hPadding List.++ s List.++ hPadding) strings
         emptyLine = List.replicate dim '.'
-        vPadding = List.replicate npad emptyLine
+        vPadding = List.replicate pdim emptyLine
         listGrid = vPadding List.++ hPadded List.++ vPadding
      in fromList $ List.map fromList listGrid
 
 grid :: [String] -> Grid
 grid strings = 
-    let spacePadding = Vector.replicate (div dim 2) emptyPlane
+    let spacePadding = Vector.replicate pdim emptyPlane
         paddedSpace = spacePadding Vector.++ (Vector.singleton (plane strings)) Vector.++ spacePadding
-        padding = Vector.replicate (div dim 2) emptySpace
+        padding = Vector.replicate pdim emptySpace
      in padding Vector.++ (Vector.singleton paddedSpace) Vector.++ padding
 
 getOffsets :: Coords -> [Coords]
@@ -98,11 +92,3 @@ solve = countOccupied $ List.head $ List.drop 6 $ iterate updateGrid (grid input
 
 main :: IO ()
 main = print $ solve
-
--- printGrid :: Grid -> IO ()
--- printGrid g = do
---     M.forM_ g $ \p -> do
---         M.forM_ p $ \r -> do
---             putStr $ Vector.toList r
---             putStr "\n"
---         putStr "\n"

@@ -17,8 +17,8 @@ stripRule s m index
 stripRuleSeq :: String -> Map.IntMap Rule -> [Int] -> [String]
 stripRuleSeq s m [] = [s]
 stripRuleSeq s m (i:is) = do
-    stripped <- stripRule s m i
-    stripRuleSeq stripped m is
+    suffix <- stripRule s m i
+    stripRuleSeq suffix m is
 
 matchesRule :: Map.IntMap Rule -> Int -> String -> Bool
 matchesRule m i s =
