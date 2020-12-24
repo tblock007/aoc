@@ -1,5 +1,10 @@
 module D20input where
 
+monster :: [String]
+monster = ["                  # ",
+           "#    ##    ##    ###",
+           " #  #  #  #  #  #   "]
+
 dim :: Int
 dim = 12
 
